@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "152598258820",
+    "firebase_url": "https://dump-trace.firebaseio.com",
+    "project_id": "dump-trace",
+    "storage_bucket": "dump-trace.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152598258820:android:cb6722cd9d9d05ae",
+        "android_client_info": {
+          "package_name": "com.example.arekr.dumptrace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152598258820-h5mkcrul57a0cbsl42dig7agbtjqrlem.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTdnJ1VuG2FzbxcO3JiL7-9eH4sVdcksg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
