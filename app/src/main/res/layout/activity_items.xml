@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.arekr.dumptrace.ItemsActivity">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="196dp"
+        android:layout_height="32dp"
+        android:text="Inform Items"
+        android:textSize="25dp"
+        tools:layout_editor_absoluteX="119dp"
+        tools:layout_editor_absoluteY="36dp"
+        android:layout_marginTop="12dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/add" />
+
+    <EditText
+        android:id="@+id/item"
+        android:layout_width="131dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Item Name"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="92dp"
+        android:layout_below="@+id/title"
+        android:layout_toStartOf="@+id/submit"
+        android:layout_marginTop="65dp" />
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="136dp"
+        android:layout_height="20dp"
+        tools:layout_editor_absoluteY="110dp"
+        tools:layout_editor_absoluteX="232dp"
+        android:layout_alignBottom="@+id/item"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="12dp" />
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        tools:layout_editor_absoluteX="203dp"
+        tools:layout_editor_absoluteY="216dp"
+        android:layout_marginTop="89dp"
+        android:layout_below="@+id/spinner"
+        android:layout_toEndOf="@+id/submit" />
+    <TextView
+        android:id="@+id/helptext"
+        android:layout_width="249dp"
+        android:layout_height="39dp"
+        android:text="Click me if you want to add"
+        android:textSize="20dp"
+        tools:layout_editor_absoluteX="119dp"
+        tools:layout_editor_absoluteY="272dp"
+        android:layout_below="@+id/add"
+        android:layout_alignEnd="@+id/spinner" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="417dp"
+        android:layout_marginBottom="49dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
+

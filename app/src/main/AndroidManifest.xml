@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -25,7 +26,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAw57QanU7FzXTTieEXfthB0m_B9qvViJc" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +41,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".StartActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ItemsActivity"></activity>
     </application>
 
 </manifest>

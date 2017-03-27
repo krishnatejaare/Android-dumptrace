@@ -20,6 +20,16 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/ivCamera"
         android:layout_marginStart="65dp" />
+    <ImageButton
+        android:id="@+id/btnSpeak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_mic"
+        android:scaleY="0.8"
+        android:layout_below="@+id/ivGallery"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -31,13 +41,14 @@
 
     <ImageView
 
+        android:id="@+id/ivImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ivImage"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/ivGallery"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="188dp"
         android:src="@android:drawable/star_big_on"
-        />
+    android:background="@drawable/border"/>
 
 
 </RelativeLayout>

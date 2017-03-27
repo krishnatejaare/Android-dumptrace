@@ -2,6 +2,7 @@ package com.example.arekr.dumptrace;
 
 import android.*;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.net.Uri;
 import android.nfc.Tag;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -27,6 +29,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +65,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -70,6 +74,8 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.UUID;
 
@@ -121,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private ImageButton btnSpeak;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
 
     @Override
 
@@ -172,6 +180,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         mProgress = new ProgressDialog(this);
         cameraPhoto = new CameraPhoto(getApplicationContext());
         galleryPhoto = new GalleryPhoto(getApplicationContext());
+        btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);
+        btnSpeak.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                promptSpeechInput();
+            }
+        });
 
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,22 +224,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
             public void onClick(View v) {
                 mProgress.setMessage("Uploading Image");
                 mProgress.show();
-
-
-
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
                 mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
                 DatabaseReference usersref = mFirebaseDatabaseReference.child("Address of the Dump spots").child(uuid);
                 usersref.child("Address").setValue(a);
                 usersref.child("Latitude").setValue(gpsTracker.getLatitude());
                 usersref.child("Longitude").setValue(gpsTracker.getLongitude());
-
-                //usersref.child("Latitude").setValue(latitude);
-               //usersref.child("Longitude").setValue(longitude);
                 usersref.child("Time").setValue(sdf.format(new Date()));
-
-
                 try {
                     Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
                     String encodedImage = ImageBase64.encode(bitmap);
@@ -249,6 +256,25 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -354,6 +380,64 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    //txtSpeechInput.setText(result.get(0));
+                    if(result.get(0).equals("open camera")){
+                        uuid = UUID.randomUUID().toString();
+                        try {
+                            startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
+                            cameraPhoto.addToGallery();
+                        } catch (IOException e) {
+                            Toast.makeText(getApplicationContext(),
+                                    "Something Wrong while taking photos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    if(result.get(0).equals("open gallery")){
+                        uuid = UUID.randomUUID().toString();
+                        startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
+                    }
+
+                    if(result.get(0).equals("upload")){
+                        mProgress.setMessage("Uploading Image");
+                        mProgress.show();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference usersref = mFirebaseDatabaseReference.child("Address of the Dump spots").child(uuid);
+                        usersref.child("Address").setValue(a);
+                        usersref.child("Latitude").setValue(gpsTracker.getLatitude());
+                        usersref.child("Longitude").setValue(gpsTracker.getLongitude());
+                        usersref.child("Time").setValue(sdf.format(new Date()));
+                        try {
+                            Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
+                            String encodedImage = ImageBase64.encode(bitmap);
+                            Uri u = S;
+
+                            filepath.putFile(u).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    mProgress.dismiss();
+                                    Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            //System.out.println("image="+encodedImage);
+                        } catch (FileNotFoundException e) {
+
+                            Toast.makeText(getApplicationContext(), "error in encoding photos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
+                break;
+            }
+
+        }
 
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {

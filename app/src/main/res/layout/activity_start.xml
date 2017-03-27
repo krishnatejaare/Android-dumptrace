@@ -8,5 +8,39 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.arekr.dumptrace.StartActivity">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report Illegal Dumping"
+        android:id="@+id/report"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="96dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order a Pick Up"
+        android:id="@+id/book"
+        android:layout_below="@+id/report"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="67dp" />
+    <ImageButton
+        android:id="@+id/btnSpeak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_mic"
+        android:layout_above="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tap_on_mic"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="normal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/book"
+        android:id="@+id/textView" />
 </RelativeLayout>
