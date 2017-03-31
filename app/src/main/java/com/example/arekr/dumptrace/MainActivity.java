@@ -26,6 +26,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -136,6 +137,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkInternetConenction();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar.setTitle("Dump Trace");
+
         manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
@@ -455,14 +460,22 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "Title", null);
+                String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "image", null);
                 S = Uri.parse(path);
-                filepath = mstorage.child("photos").child(uuid).child(S.getLastPathSegment());
+
+               // filepath = mstorage.child("photos").child(uuid).child(S.getLastPathSegment());
+                filepath = mstorage.child("photos").child(uuid);
                 //}
             } else if (requestCode == GALLERY_REQUEST) {
                 Uri uri = data.getData();
                 S = data.getData();
-                filepath = mstorage.child("photos").child(uuid).child(S.getLastPathSegment());
+                String name=S.getLastPathSegment();
+//                FormBodyPart userFile = new FormBodyPart("userfile", new FileBody(myImageFile));
+//                userFile.addField("filename","NEWNAMEOFILE.jpg");
+//                multipartEntity.addPart(userFile);
+
+                //filepath = mstorage.child("photos").child(uuid).child(S.getLastPathSegment());
+                filepath = mstorage.child("photos").child(uuid);
 
                 galleryPhoto.setPhotoUri(uri);
                 String photoPath = galleryPhoto.getPath();

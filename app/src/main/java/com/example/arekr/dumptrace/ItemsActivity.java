@@ -3,6 +3,7 @@ package com.example.arekr.dumptrace;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,9 @@ public class ItemsActivity extends AppCompatActivity implements AdapterView.OnIt
     private Button add,submit;
     private TextView title,helptext;
     private Spinner spinner;
+    String value;
+    List<item>data=new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,10 @@ public class ItemsActivity extends AppCompatActivity implements AdapterView.OnIt
         spinner=(Spinner)findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         add.setOnClickListener(this);
+        submit.setOnClickListener(this);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar.setTitle("Schedule pickups");
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
         categories.add("1");
@@ -53,7 +62,7 @@ public class ItemsActivity extends AppCompatActivity implements AdapterView.OnIt
 
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
+        value = parent.getItemAtPosition(position).toString();
 
         // Showing selected spinner item
         //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
@@ -65,8 +74,30 @@ public class ItemsActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.add) {
+            ArrayList<String>name=new ArrayList<>();
+
+            data.add(new item(item.getText().toString(),value.toString()));
+
+            spinner.setSelection(1);
+            item.setText("");
+
+        }
+
+        else if (view.getId() == R.id.submit) {
+            ArrayList<String>name=new ArrayList<>();
 
 
+            data.add(new item(item.getText().toString(),value.toString()));
+//            data.add(new Tutorial("table","2"));
+//            data.add(new Tutorial("chair","3"));
+            System.out.println("Teja");
+            System.out.println(data);
+
+            Intent i = new Intent(ItemsActivity.this, ItemslistActivity.class);
+            Bundle args = new Bundle();
+            args.putSerializable("data", (Serializable) data);
+            i.putExtra("bundle", args);
+            startActivity(i);
         }
     }
 }

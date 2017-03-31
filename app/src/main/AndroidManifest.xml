@@ -42,7 +42,9 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".ItemsActivity"></activity>
+        <activity android:name=".ItemsActivity" />
+        <activity android:name=".ItemslistActivity" />
+        <activity android:name=".PayingActivity"></activity>
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,6 +25,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_start);
         report=(Button)findViewById(R.id.report);
         book=(Button)findViewById(R.id.book);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Dump Trace");
         report.setOnClickListener(this);
         book.setOnClickListener(this);
         btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);

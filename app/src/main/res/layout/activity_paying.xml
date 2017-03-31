@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.arekr.dumptrace.PayingActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:titleTextColor="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="70dp"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
+        <TextView
+            android:id="@+id/t1"
+            android:layout_width="344dp"
+            android:layout_height="46dp"
+            android:text="Price for the items to be picked up:"
+            android:textSize="20dp"
+            android:layout_marginBottom="10dp"
+
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="27dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_alignTop="@+id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="41dp"
+        android:id="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/t2"
+            android:layout_width="223dp"
+            android:layout_height="52dp"
+            android:layout_below="@+id/t1"
+            android:layout_marginBottom="10dp"
+            android:text="Total number of Items"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="102dp" />
+
+        <TextView
+            android:id="@+id/var"
+            android:layout_width="88dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/t1"
+
+            android:text=""
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="280dp"
+            tools:layout_editor_absoluteY="110dp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="54dp"
+        android:orientation="horizontal"
+        android:layout_alignTop="@+id/linearLayout2"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout3">
+        <TextView
+            android:id="@+id/t3"
+            android:layout_width="123dp"
+            android:layout_height="43dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/t2"
+            android:text="Price"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="177dp" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="85dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="140dp"
+            android:layout_below="@+id/t2"
+
+            android:text=""
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="283dp"
+            tools:layout_editor_absoluteY="177dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/linearLayout3"
+        android:layout_marginTop="35dp"
+        android:id="@+id/linearLayout5"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/t4"
+            android:layout_width="127dp"
+            android:layout_height="47dp"
+            android:layout_below="@+id/t3"
+            android:layout_marginBottom="10dp"
+            android:text="Discount"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="255dp" />
+
+        <TextView
+            android:id="@+id/discount"
+            android:layout_width="87dp"
+            android:layout_height="34dp"
+            android:layout_below="@+id/t3"
+
+            android:layout_marginLeft="140dp"
+            android:text=""
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="281dp"
+            tools:layout_editor_absoluteY="255dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/linearLayout5"
+        android:layout_marginTop="64dp"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayout6">
+
+        <TextView
+            android:id="@+id/t5"
+            android:layout_width="129dp"
+            android:layout_height="42dp"
+
+            android:layout_below="@+id/t4"
+            android:text="Final Price"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="344dp" />
+
+        <TextView
+            android:id="@+id/finalprice"
+            android:layout_width="89dp"
+            android:layout_height="36dp"
+            android:layout_below="@+id/t4"
+
+            android:layout_marginLeft="135dp"
+            android:text=""
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="55dp"
+            tools:layout_editor_absoluteY="284dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@+id/linearLayout5"
+        android:layout_alignTop="@+id/linearLayout6"
+        android:layout_marginEnd="189dp"
+        android:layout_marginTop="48dp">
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="100dp"
+            android:text="ok"
+            tools:layout_editor_absoluteX="69dp"
+            tools:layout_editor_absoluteY="324dp" />
+    </LinearLayout>
+
+
+</RelativeLayout>
