@@ -24,11 +24,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         report=(Button)findViewById(R.id.report);
-        book=(Button)findViewById(R.id.book);
+        //book=(Button)findViewById(R.id.book);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Dump Trace");
         report.setOnClickListener(this);
-        book.setOnClickListener(this);
+        //book.setOnClickListener(this);
         btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);
         btnSpeak.setOnClickListener(new View.OnClickListener() {
 
@@ -66,14 +66,13 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     //txtSpeechInput.setText(result.get(0));
                     if(result.get(0).equals("report illegal dumping")){
                         Intent i = new Intent(StartActivity.this, MainActivity.class);
-
                         startActivity(i);
                     }
-                    if(result.get(0).equals("order a pick up")){
-                        Intent i = new Intent(StartActivity.this, ItemsActivity.class);
-
-                        startActivity(i);
-                    }
+//                    if(result.get(0).equals("order a pick up")){
+//                        Intent i = new Intent(StartActivity.this, ItemsActivity.class);
+//
+//                        startActivity(i);
+//                    }
                 }
                 break;
             }
@@ -88,12 +87,12 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
             startActivity(i);
         }
-        if (v.getId() == R.id.book) {
-
-            Intent i = new Intent(StartActivity.this, ItemsActivity.class);
-
-            startActivity(i);
-        }
+//        if (v.getId() == R.id.book) {
+//
+//            Intent i = new Intent(StartActivity.this, ItemsActivity.class);
+//
+//            startActivity(i);
+//        }
 
     }
 }
