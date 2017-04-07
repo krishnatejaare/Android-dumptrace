@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.arekr.dumptrace.DetailsActivity">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:titleTextColor="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="phone"
+        android:text="Phone Number"
+        android:layout_below="@+id/address"
+        android:layout_alignStart="@+id/address" />
+
+    <Button
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick a Date"
+        android:layout_marginBottom="20dp"
+        android:onClick="setDate"
+        android:layout_above="@+id/time"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/dateView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/date"
+        android:layout_alignEnd="@+id/phone"
+        android:layout_marginBottom="14dp"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick a Time"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/submit"
+        android:layout_alignEnd="@+id/date" />
+
+    <TextView
+        android:id="@+id/timeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_marginEnd="12dp"
+        android:layout_alignBaseline="@+id/time"
+        android:layout_alignBottom="@+id/time"
+        android:layout_alignEnd="@+id/dateView" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Submit"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/timeView" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  Please Enter the details below"
+        android:textSize="20dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Address"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/name"
+        android:layout_alignStart="@+id/name" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="Email"
+        android:layout_below="@+id/phone"
+        android:layout_alignStart="@+id/phone"
+        android:layout_marginTop="20dp" />
+
+
+</RelativeLayout>

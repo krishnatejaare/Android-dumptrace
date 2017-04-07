@@ -30,9 +30,6 @@ public class Http extends AsyncTask<Object, Integer, String> {
             URL url = new URL(googlePlacesUrl);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             System.out.println(httpURLConnection.getResponseCode());
-            //httpURLConnection.setRequestMethod("GET");
-            //httpURLConnection.setDoOutput(false);
-            // httpURLConnection.application/json
             httpURLConnection.connect();
             System.out.println(httpURLConnection.getResponseCode());
 

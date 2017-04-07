@@ -1,6 +1,7 @@
 package com.example.arekr.dumptrace;
 
 import android.*;
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -17,12 +18,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.nfc.Tag;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,6 +55,20 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.vision.v1.Vision;
+import com.google.api.services.vision.v1.VisionRequest;
+import com.google.api.services.vision.v1.VisionRequestInitializer;
+import com.google.api.services.vision.v1.model.AnnotateImageRequest;
+import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
+import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
+import com.google.api.services.vision.v1.model.EntityAnnotation;
+import com.google.api.services.vision.v1.model.Feature;
+import com.google.api.services.vision.v1.model.Image;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -76,6 +94,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.UUID;
@@ -84,12 +103,15 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity implements AsyncResponse,GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    //private static final String GOOGLE_API_KEY = "AIzaSyB0xxmOEjeMEp4ym20pO1NyInvL4cdl2Ko";
-
-    // private static final String GOOGLE_API_KEY = "AIzaSyCtuMR0XBODO2ugxyeq8UQHv5y2oNE5tFE";
-
+    private static final String CLOUD_VISION_API_KEY = "AIzaSyAKOO0uCKphUyBtK3vBq1Hgoty-q0k4iro";
+    public static final String FILE_NAME = "temp.jpg";
+    private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
+    private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
     private static final String GOOGLE_API_KEY = "AIzaSyAw57QanU7FzXTTieEXfthB0m_B9qvViJc";
     public static final String TAG = MainActivity.class.getSimpleName();
+    private static final int GALLERY_PERMISSIONS_REQUEST = 0;
+    public static final int CAMERA_PERMISSIONS_REQUEST = 2;
+    public static final int CAMERA_IMAGE_REQUEST = 3;
     Uri S;
     GPSTracker gpsTracker;
     Bitmap photo;
@@ -112,21 +134,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     double latitude;
     double longitude;
+    boolean validate=false;
     String provider;
     Object[] toPass;
     //String googlePlacesData = null;
     String uuid;
-
-    // nextInt is normally exclusive of the top value,
-// so add 1 to make it inclusive
     int randomNum;
-
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client;
     private ImageButton btnSpeak;
     private final int REQ_CODE_SPEECH_INPUT = 100;
@@ -163,21 +178,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
 
         mstorage = FirebaseStorage.getInstance().getReference();
         gpsTracker = new GPSTracker(this);
-
-//        StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?");
-//        googlePlacesUrl.append("latlng=" + gpsTracker.getLatitude() + "," + gpsTracker.getLongitude());
-//        googlePlacesUrl.append("&location_type=ROOFTOP&result_type=street_address");
-//        googlePlacesUrl.append("&sensor=true");
-//        googlePlacesUrl.append("&key=" + GOOGLE_API_KEY);
-//        System.out.println("googlePlacesUrl" + googlePlacesUrl);
-//        toPass = new Object[1];
-//        Log.d("TAG", googlePlacesUrl.toString());
-//
-//        toPass[0] = googlePlacesUrl.toString();
-//
-//        Http http = new Http();
-//        http.delegate = this;
-//        http.execute(toPass);
         ivImage = (ImageView) findViewById(R.id.ivImage);
         ivCamera = (ImageView) findViewById(R.id.ivCamera);
         ivGallery = (ImageView) findViewById(R.id.ivGallery);
@@ -198,18 +198,26 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
             @Override
             public void onClick(View v) {
                 uuid = UUID.randomUUID().toString();
-                Log.d("camera", "latitude");
-                System.out.println("camera");
-                System.out.println("camera");
-                System.out.println("camera");
-
-                try {
-                    startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
-                    cameraPhoto.addToGallery();
-                } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "Something Wrong while taking photos", Toast.LENGTH_SHORT).show();
-                }
+                startCamera();
+//                Log.d("camera", "latitude");
+//                System.out.println("camera");
+//                System.out.println("camera");
+//                System.out.println("camera");
+//                if (PermissionUtils.requestPermission(
+//                        MainActivity.this,
+//                        CAMERA_PERMISSIONS_REQUEST,
+//                        Manifest.permission.READ_EXTERNAL_STORAGE,
+//                        Manifest.permission.CAMERA)) {
+//
+//                    try {
+//
+//                        startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
+//                        cameraPhoto.addToGallery();
+//                    } catch (IOException e) {
+//                        Toast.makeText(getApplicationContext(),
+//                                "Something Wrong while taking photos", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
             }
         });
 
@@ -217,11 +225,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
             @Override
             public void onClick(View v) {
                 uuid = UUID.randomUUID().toString();
-                System.out.println("Gallery");
-                System.out.println("Gallery");
-                Log.d("gallery", "latitude");
-
-                startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
+                startGalleryChooser();
+//                System.out.println("Gallery");
+//                System.out.println("Gallery");
+//                Log.d("gallery", "latitude");
+//                if (PermissionUtils.requestPermission(MainActivity.this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//
+//                startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);}
             }
         });
 
@@ -229,29 +239,36 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
             public void onClick(View v) {
                 mProgress.setMessage("Uploading Image");
                 mProgress.show();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference usersref = mFirebaseDatabaseReference.child("Address of the Dump spots").child(uuid);
-                usersref.child("Address").setValue(a);
-                usersref.child("Latitude").setValue(gpsTracker.getLatitude());
-                usersref.child("Longitude").setValue(gpsTracker.getLongitude());
-                usersref.child("Time").setValue(sdf.format(new Date()));
-                try {
-                    Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
-                    String encodedImage = ImageBase64.encode(bitmap);
-                    Uri u = S;
+                if(validate==true) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+                    DatabaseReference usersref = mFirebaseDatabaseReference.child("Address of the Dump spots").child(uuid);
+                    usersref.child("Address").setValue(a);
+                    usersref.child("Latitude").setValue(gpsTracker.getLatitude());
+                    usersref.child("Longitude").setValue(gpsTracker.getLongitude());
+                    usersref.child("Time").setValue(sdf.format(new Date()));
+                    try {
+                        Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
+                        String encodedImage = ImageBase64.encode(bitmap);
+                        Uri u = S;
 
-                    filepath.putFile(u).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            mProgress.dismiss();
-                            Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    //System.out.println("image="+encodedImage);
-                } catch (FileNotFoundException e) {
+                        filepath.putFile(u).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                mProgress.dismiss();
+                                Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        //System.out.println("image="+encodedImage);
+                    } catch (FileNotFoundException e) {
 
-                    Toast.makeText(getApplicationContext(), "error in encoding photos", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "error in encoding photos", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+
+                    mProgress.dismiss();
+                    Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -260,6 +277,53 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+    public void startGalleryChooser() {
+        if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);}
+    }
+
+
+    public void startCamera() {
+        if (PermissionUtils.requestPermission(
+                this,
+                CAMERA_PERMISSIONS_REQUEST,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA)) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            Uri uri = FileProvider.getUriForFile(MainActivity.this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+           intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+
+                startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
+               // cameraPhoto.addToGallery();
+
+        }
+    }
+    public File getCameraFile() {
+        File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return new File(dir, FILE_NAME);
+    }
+
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case CAMERA_PERMISSIONS_REQUEST:
+                if (PermissionUtils.permissionGranted(requestCode, CAMERA_PERMISSIONS_REQUEST, grantResults)) {
+                    startCamera();
+                }
+                break;
+            case GALLERY_PERMISSIONS_REQUEST:
+                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
+                    startGalleryChooser();
+                }
+                break;
+        }
     }
     private void promptSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -349,31 +413,23 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
     @Override
     protected void onResume() {
         super.onResume();
-
-
-
-        //randomNum = ThreadLocalRandom.current().nextInt(100, 10000000 + 1);
-        //uuid=Integer.toString(randomNum);
-       gpsTracker.getLocation();
-       // mGoogleApiClient.connect();
+        gpsTracker.getLocation();
+        // mGoogleApiClient.connect();
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?");
         googlePlacesUrl.append("latlng=" + gpsTracker.getLatitude() + "," + gpsTracker.getLongitude());
-       // googlePlacesUrl.append("latlng=" + latitude + "," + longitude);
+        // googlePlacesUrl.append("latlng=" + latitude + "," + longitude);
         //googlePlacesUrl.append("&location_type=ROOFTOP&result_type=street_address");
         googlePlacesUrl.append("&result_type=street_address");
-       //googlePlacesUrl.append("&location_type=GEOMETRIC_CENTER|APPROXIMATE");
+        //googlePlacesUrl.append("&location_type=GEOMETRIC_CENTER|APPROXIMATE");
         googlePlacesUrl.append("&sensor=true");
         googlePlacesUrl.append("&key=" + GOOGLE_API_KEY);
         System.out.println("googlePlacesUrl" + googlePlacesUrl);
         toPass = new Object[1];
         Log.d("TAG", googlePlacesUrl.toString());
-
         toPass[0] = googlePlacesUrl.toString();
-
         Http http = new Http();
         http.delegate = this;
         http.execute(toPass);
-
 
     }
 
@@ -445,25 +501,36 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         }
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == CAMERA_REQUEST) {
+            if (requestCode == CAMERA_IMAGE_REQUEST ) {
 
                 String photoPath = cameraPhoto.getPhotoPath();
+
                 selectedPhoto = photoPath;
                 try {
-                    Bitmap bitmap = ImageLoader.init().from(photoPath).requestSize(1024, 1024).getBitmap();
-                    photo = bitmap;
+                    Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
+                    Bitmap bitmap =
+                            scaleBitmapDown(
+                                    MediaStore.Images.Media.getBitmap(getContentResolver(), uri),
+                                    1200);
+                    //Bitmap bit = ImageLoader.init().from(photoPath).requestSize(1024, 1024).getBitmap();
+                    callCloudVision(bitmap);
+
                     ivImage.setImageBitmap(bitmap);
+                    photo = bitmap;
                 } catch (FileNotFoundException e) {
                     Toast.makeText(getApplicationContext(),
                             "Something Wrong while loading photos", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Log.d(TAG, "Image picking failed because " + e.getMessage());
                 }
 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "image", null);
+
                 S = Uri.parse(path);
 
-               // filepath = mstorage.child("photos").child(uuid).child(S.getLastPathSegment());
+                // filepath = mstorage.child("photos").child(uuid).child(S.getLastPathSegment());
                 filepath = mstorage.child("photos").child(uuid);
                 //}
             } else if (requestCode == GALLERY_REQUEST) {
@@ -482,18 +549,40 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                 selectedPhoto = photoPath;
                 try {
                     Bitmap bitmap = ImageLoader.init().from(photoPath).requestSize(512, 512).getBitmap();
+                    callCloudVision(bitmap);
                     ivImage.setImageBitmap(bitmap);
 
                 } catch (FileNotFoundException e) {
                     Toast.makeText(getApplicationContext(),
                             "Something Wrong while choosing photos", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Log.d(TAG, "Image picking failed because " + e.getMessage());
+                    //Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
                 }
 
 
             }
         }
     }
+    public Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
 
+        int originalWidth = bitmap.getWidth();
+        int originalHeight = bitmap.getHeight();
+        int resizedWidth = maxDimension;
+        int resizedHeight = maxDimension;
+
+        if (originalHeight > originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
+        } else if (originalWidth > originalHeight) {
+            resizedWidth = maxDimension;
+            resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
+        } else if (originalHeight == originalWidth) {
+            resizedHeight = maxDimension;
+            resizedWidth = maxDimension;
+        }
+        return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
+    }
 
     @Override
     public void processFinish(String output) throws JSONException {
@@ -509,6 +598,120 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         System.out.println(a);
 
 
+    }
+
+    private void callCloudVision(final Bitmap bitmap) throws IOException {
+        // Switch text to loading
+
+
+        // Do the real work in an async task, because we need to use the network anyway
+        new AsyncTask<Object, Void, String>() {
+            @Override
+            protected String doInBackground(Object... params) {
+                try {
+                    HttpTransport httpTransport = AndroidHttp.newCompatibleTransport();
+                    JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
+
+                    VisionRequestInitializer requestInitializer =
+                            new VisionRequestInitializer(CLOUD_VISION_API_KEY) {
+                                /**
+                                 * We override this so we can inject important identifying fields into the HTTP
+                                 * headers. This enables use of a restricted cloud platform API key.
+                                 */
+                                @Override
+                                protected void initializeVisionRequest(VisionRequest<?> visionRequest)
+                                        throws IOException {
+                                    super.initializeVisionRequest(visionRequest);
+
+                                    String packageName = getPackageName();
+                                    visionRequest.getRequestHeaders().set(ANDROID_PACKAGE_HEADER, packageName);
+
+                                    String sig = PackageManagerUtils.getSignature(getPackageManager(), packageName);
+
+                                    visionRequest.getRequestHeaders().set(ANDROID_CERT_HEADER, sig);
+                                }
+                            };
+
+                    Vision.Builder builder = new Vision.Builder(httpTransport, jsonFactory, null);
+                    builder.setVisionRequestInitializer(requestInitializer);
+
+                    Vision vision = builder.build();
+
+                    BatchAnnotateImagesRequest batchAnnotateImagesRequest =
+                            new BatchAnnotateImagesRequest();
+                    batchAnnotateImagesRequest.setRequests(new ArrayList<AnnotateImageRequest>() {{
+                        AnnotateImageRequest annotateImageRequest = new AnnotateImageRequest();
+
+                        // Add the image
+                        Image base64EncodedImage = new Image();
+                        // Convert the bitmap to a JPEG
+                        // Just in case it's a format that Android understands but Cloud Vision
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+                        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+
+                        // Base64 encode the JPEG
+                        base64EncodedImage.encodeContent(imageBytes);
+                        annotateImageRequest.setImage(base64EncodedImage);
+
+                        // add the features we want
+                        annotateImageRequest.setFeatures(new ArrayList<Feature>() {{
+                            Feature labelDetection = new Feature();
+                            labelDetection.setType("LABEL_DETECTION");
+                            labelDetection.setMaxResults(10);
+                            add(labelDetection);
+                        }});
+
+                        // Add the list of one thing to the request
+                        add(annotateImageRequest);
+                    }});
+
+                    Vision.Images.Annotate annotateRequest =
+                            vision.images().annotate(batchAnnotateImagesRequest);
+                    // Due to a bug: requests to Vision API containing large images fail when GZipped.
+                    annotateRequest.setDisableGZipContent(true);
+                    Log.d(TAG, "created Cloud Vision request object, sending request");
+
+                    BatchAnnotateImagesResponse response = annotateRequest.execute();
+                    return convertResponseToString(response);
+
+                } catch (GoogleJsonResponseException e) {
+                    Log.d(TAG, "failed to make API request because " + e.getContent());
+                } catch (IOException e) {
+                    Log.d(TAG, "failed to make API request because of other IOException " +
+                            e.getMessage());
+                }
+                return "Cloud Vision API request failed. Check logs for details.";
+            }
+
+            protected void onPostExecute(String result) {
+                System.out.println(" cloud vision result is  "+ result);
+                //mImageDetails.setText(result);
+            }
+        }.execute();
+    }
+    private String convertResponseToString(BatchAnnotateImagesResponse response) {
+        String message = "I found these things:\n\n";
+
+        List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
+        System.out.println("labels are"+labels);
+        // System.out.println("labels Description are"+labels);
+
+        if (labels != null) {
+            for (EntityAnnotation label : labels) {
+                // if(label.getDescription()=="waste||pollution||scrap||furniture||rubble||mattress||bed||yard||litter||patio||backyard||asphalt||lawn||material||flora||tree||soil||geological phenomenon||road"){
+                if(label.getDescription().matches("waste||pollution||scrap||furniture||rubble||mattress||bed||yard||litter||patio||backyard||asphalt||lawn||material||flora||tree||soil||geological phenomenon||jungle||garden||forest||natural environment||grass||field")){
+                    System.out.println("label Detected..................................................................");
+                    validate=true;
+                }
+                message += String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription());
+                message += "\n";
+            }
+        } else {
+            message += "nothing";
+        }
+
+        return message;
     }
 
     @Override
@@ -559,8 +762,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
     private void handleNewLocation(Location location) {
         Log.d(TAG, location.toString());
 
-    latitude = location.getLatitude();
-    longitude = location.getLongitude();
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
 
 //        else{
 //    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);

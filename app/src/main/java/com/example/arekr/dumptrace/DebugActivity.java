@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemslistActivity extends AppCompatActivity implements Serializable {
+public class DebugActivity extends AppCompatActivity implements Serializable {
     private List<item> tutorialList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ItemsAdapter tutorialsAdapter;
@@ -36,11 +36,11 @@ public class ItemslistActivity extends AppCompatActivity implements Serializable
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.out.println("teja ITEMS LIST................................................................................");
-        setContentView(R.layout.activity_itemslist);
+        setContentView(R.layout.activity_debug);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Schedule pickup");
         //setSupportActionBar(toolbar);
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ItemslistActivity.this);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(DebugActivity.this);
         Gson gson = new Gson();
         String js=null;
         String jso = sharedPrefs.getString(js, null);

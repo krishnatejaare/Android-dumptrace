@@ -15,6 +15,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -44,7 +45,21 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ItemsActivity" />
         <activity android:name=".ItemslistActivity" />
-        <activity android:name=".PayingActivity"></activity>
+        <activity android:name=".PayingActivity" />
+        <activity android:name=".DetailsActivity" />
+        <activity android:name=".afterdetailsActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity android:name=".DebugActivity"></activity>
     </application>
 
 </manifest>

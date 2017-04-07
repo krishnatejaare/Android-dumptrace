@@ -1,6 +1,9 @@
 package com.example.arekr.dumptrace;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.nfc.Tag;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -92,12 +97,21 @@ public class ItemsActivity extends AppCompatActivity implements AdapterView.OnIt
 //            data.add(new Tutorial("chair","3"));
             System.out.println("Teja");
             System.out.println(data);
-
-            Intent i = new Intent(ItemsActivity.this, ItemslistActivity.class);
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ItemsActivity.this);
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(data);
+            String j="itemskey";
+            editor.putString(j, json);
+            editor.commit();
+            System.out.println("teja ITEMS LIST................................................................................");
+            Intent i = new Intent(ItemsActivity.this, DebugActivity.class);
             Bundle args = new Bundle();
             args.putSerializable("data", (Serializable) data);
             i.putExtra("bundle", args);
+            System.out.println("teja ITEMS LIST................................................................................");
             startActivity(i);
+            System.out.println("teja ITEMS LIST................................................................................");
         }
     }
 }

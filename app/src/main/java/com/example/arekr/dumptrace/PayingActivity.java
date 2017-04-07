@@ -1,13 +1,21 @@
 package com.example.arekr.dumptrace;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class PayingActivity extends AppCompatActivity{
+import com.google.gson.Gson;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class PayingActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView var,t1,t2,t3,t4,t5,price,discount,finalprice;
     private Button ok;
@@ -16,6 +24,7 @@ public class PayingActivity extends AppCompatActivity{
     String s,w,r;
     String id;
     Intent intent;
+    ArrayList<Price>p=new ArrayList<>();
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +44,7 @@ public class PayingActivity extends AppCompatActivity{
         discount=(TextView)findViewById(R.id.discount);
         finalprice=(TextView)findViewById(R.id.finalprice);
         ok=(Button)findViewById(R.id.ok);
-
+        ok.setOnClickListener(this);
 
 
 
@@ -54,9 +63,10 @@ public class PayingActivity extends AppCompatActivity{
             double a = (x) * 9.07;
             double b = 0;
             String s = Double.toString(a);
+            String r=s;
             String w = Double.toString(b);
             price.setText(s);
-            discount.setText(s);
+            discount.setText(r);
             finalprice.setText(w);
 
         } else {
@@ -64,13 +74,34 @@ public class PayingActivity extends AppCompatActivity{
             double b = 3 * 9.07;
             double c = a - b;
             String s = Double.toString(a);
-            String w = Double.toString(b);
-            String r = Double.toString(c);
+            String r = Double.toString(b);
+            String w = Double.toString(c);
             price.setText(s);
-            discount.setText(w);
-            finalprice.setText(r);
+            discount.setText(r);
+            finalprice.setText(w);
 
         }
+
+
+
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.ok) {
+            p.add(new Price(id,price.getText().toString(),discount.getText().toString(),finalprice.getText().toString()));
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(PayingActivity.this);
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            Gson gson = new Gson();
+            String pricelist = gson.toJson(p);
+            String price="pricekey";
+            editor.putString(price, pricelist);
+            editor.commit();
+            Intent i = new Intent(PayingActivity.this, DetailsActivity.class);
+//            Bundle args = new Bundle();
+//            args.putSerializable("data", (Serializable) data);
+//            i.putExtra("bundle", args);
+            startActivity(i);
+        }
+    }
 }
