@@ -42,7 +42,7 @@ public class ItemslistActivity extends AppCompatActivity implements Serializable
         //setSupportActionBar(toolbar);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ItemslistActivity.this);
         Gson gson = new Gson();
-        String js=null;
+        String js="itemskey";
         String jso = sharedPrefs.getString(js, null);
         Type type = new TypeToken<ArrayList<item>>() {}.getType();
         ArrayList<item> arrayList = gson.fromJson(jso, type);

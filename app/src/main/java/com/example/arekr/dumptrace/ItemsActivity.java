@@ -105,7 +105,7 @@ public class ItemsActivity extends AppCompatActivity implements AdapterView.OnIt
             editor.putString(j, json);
             editor.commit();
             System.out.println("teja ITEMS LIST................................................................................");
-            Intent i = new Intent(ItemsActivity.this, DebugActivity.class);
+            Intent i = new Intent(ItemsActivity.this, ItemslistActivity.class);
             Bundle args = new Bundle();
             args.putSerializable("data", (Serializable) data);
             i.putExtra("bundle", args);
