@@ -22,7 +22,7 @@
         android:layout_marginTop="13dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="Name"
         android:layout_below="@+id/title"
         android:layout_centerHorizontal="true" />
 
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="phone"
-        android:text="Phone Number"
+        android:hint="Phone Number"
         android:layout_below="@+id/address"
         android:layout_alignStart="@+id/address" />
 
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Address"
+        android:hint="Address"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="19dp"
         android:layout_below="@+id/name"
@@ -110,7 +110,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:text="Email"
+        android:hint="Email"
         android:layout_below="@+id/phone"
         android:layout_alignStart="@+id/phone"
         android:layout_marginTop="20dp" />

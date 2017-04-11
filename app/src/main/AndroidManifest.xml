@@ -59,6 +59,11 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <activity
+            android:name=".NavigationalDrawerActivity"
+            android:label="@string/title_activity_navigational_drawer"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ConfirmationActivity"></activity>
     </application>
 
 </manifest>

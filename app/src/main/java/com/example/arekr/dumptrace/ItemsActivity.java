@@ -17,17 +17,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class ItemsActivity extends NavigationalDrawerActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private EditText item;
     private Button add,submit;
     private TextView title,helptext;
     private Spinner spinner;
-    String value;
+    String value,json,j;
     List<item>data=new ArrayList<>();
 
 
@@ -76,14 +78,34 @@ public class ItemsActivity extends AppCompatActivity implements AdapterView.OnIt
         // TODO Auto-generated method stub
     }
 
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        String a=j;
+        String b=json;
+        savedInstanceState.putString(j, json);
+        // etc.
+    }
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+        Gson gson = new Gson();
+        String myString = savedInstanceState.getString(j);
+        Type type = new TypeToken<ArrayList<item>>() {}.getType();
+        ArrayList<item> data = gson.fromJson(myString, type);
+    }
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.add) {
             ArrayList<String>name=new ArrayList<>();
 
             data.add(new item(item.getText().toString(),value.toString()));
-
-            spinner.setSelection(1);
+            int a=Integer.parseInt(value);
+            spinner.setSelection(0);
             item.setText("");
 
         }
@@ -91,17 +113,18 @@ public class ItemsActivity extends AppCompatActivity implements AdapterView.OnIt
         else if (view.getId() == R.id.submit) {
             ArrayList<String>name=new ArrayList<>();
 
-
             data.add(new item(item.getText().toString(),value.toString()));
 //            data.add(new Tutorial("table","2"));
 //            data.add(new Tutorial("chair","3"));
+
             System.out.println("Teja");
             System.out.println(data);
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ItemsActivity.this);
-            SharedPreferences.Editor editor = sharedPrefs.edit();
             Gson gson = new Gson();
-            String json = gson.toJson(data);
-            String j="itemskey";
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                json = gson.toJson(data);
+
+            j="itemskey";
             editor.putString(j, json);
             editor.commit();
             System.out.println("teja ITEMS LIST................................................................................");
@@ -112,6 +135,7 @@ public class ItemsActivity extends AppCompatActivity implements AdapterView.OnIt
             System.out.println("teja ITEMS LIST................................................................................");
             startActivity(i);
             System.out.println("teja ITEMS LIST................................................................................");
+
         }
     }
 }

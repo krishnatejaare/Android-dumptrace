@@ -9,4 +9,8 @@
     <string name="date_button_set">Set Date</string>
     <string name="date_view_set">The Date is: </string>
     <string name="date_selected">Your Selected Date is</string>
+    <string name="title_activity_navigational_drawer">NavigationalDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

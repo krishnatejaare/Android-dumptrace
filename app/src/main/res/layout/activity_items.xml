@@ -36,7 +36,7 @@
         android:layout_height="48dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Item Name"
+        android:hint="Item name"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="92dp"
         android:layout_below="@+id/title"

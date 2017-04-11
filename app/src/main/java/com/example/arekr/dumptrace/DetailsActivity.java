@@ -165,7 +165,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
             edito.putString(details, jso);
             edito.commit();
 
-            Intent i = new Intent(DetailsActivity.this, afterdetailsActivity.class);
+            Intent i = new Intent(DetailsActivity.this, NavigationalDrawerActivity.class);
             Bundle args = new Bundle();
             args.putSerializable("details", (Serializable) d);
             i.putExtra("bundle", args);
