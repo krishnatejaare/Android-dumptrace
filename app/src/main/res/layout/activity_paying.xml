@@ -31,12 +31,11 @@
             android:id="@+id/t1"
             android:layout_width="344dp"
             android:layout_height="46dp"
-            android:text="Price List:"
-
+            android:text="Price List"
+            android:textStyle="bold"
             android:textSize="25dp"
             android:paddingLeft="130dp"
-            android:textColor="@color/cardview_dark_background"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="30dp"
 
             tools:layout_editor_absoluteX="27dp"
             tools:layout_editor_absoluteY="27dp" />

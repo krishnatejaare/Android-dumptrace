@@ -13,19 +13,20 @@
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item Count"
-        android:textStyle="bold"
+        android:text="Item Count:"
+
         android:textSize="20dp"
         android:layout_alignBottom="@+id/t1"
         android:layout_alignParentStart="true" />
 
-    <Button
+    <TextView
         android:id="@+id/verify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="40dp"
-
+        android:textSize="25dp"
         android:text="Verify"
+        android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -34,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="t1"
+        android:textStyle="bold"
         android:textSize="15dp"
         android:layout_marginRight="100px"
         android:layout_below="@+id/verify"
@@ -47,9 +49,9 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/count"
         android:textSize="20dp"
-        android:textStyle="bold"
+
         android:layout_marginTop="20dp"
-        android:text="Final Price" />
+        android:text="Final Price:" />
 
     <TextView
         android:id="@+id/t2"
@@ -57,6 +59,7 @@
         android:layout_height="wrap_content"
         android:text="t2"
         android:textSize="15dp"
+        android:textStyle="bold"
         android:layout_alignBaseline="@+id/price"
         android:layout_alignBottom="@+id/price"
         android:layout_alignStart="@+id/t1" />
@@ -68,15 +71,16 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/price"
         android:textSize="20dp"
-        android:textStyle="bold"
+
         android:layout_marginTop="20dp"
-        android:text="Name" />
+        android:text="Name:" />
 
     <TextView
         android:id="@+id/t3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="t3"
+        android:textStyle="bold"
         android:textSize="15dp"
         android:layout_above="@+id/address"
         android:layout_alignStart="@+id/t2" />
@@ -88,15 +92,16 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/name"
         android:textSize="20dp"
-        android:textStyle="bold"
+
         android:layout_marginTop="20dp"
-        android:text="Address" />
+        android:text="Address:" />
 
     <TextView
         android:id="@+id/t4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="t4"
+        android:textStyle="bold"
         android:textSize="15dp"
         android:layout_alignBaseline="@+id/address"
         android:layout_alignBottom="@+id/address"
@@ -108,16 +113,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:textSize="20dp"
-        android:textStyle="bold"
+
         android:layout_below="@+id/address"
         android:layout_marginTop="20dp"
-        android:text="Email ID" />
+        android:text="Email ID:" />
 
     <TextView
         android:id="@+id/t5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/t4"
+        android:textStyle="bold"
         android:textSize="15dp"
         android:layout_alignTop="@+id/email"
         android:text="t5" />
@@ -128,10 +134,10 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/email"
         android:textSize="20dp"
-        android:textStyle="bold"
+
         android:layout_below="@+id/email"
         android:layout_marginTop="20dp"
-        android:text="Mobile"
+        android:text="Mobile:"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -140,10 +146,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:textSize="20dp"
-        android:textStyle="bold"
+
         android:layout_below="@+id/phone"
         android:layout_marginTop="20dp"
-        android:text="Pick Up Date" />
+        android:text="Pick Date:" />
 
     <TextView
         android:id="@+id/time"
@@ -151,16 +157,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:textSize="20dp"
-        android:textStyle="bold"
+
         android:layout_below="@+id/date"
         android:layout_marginTop="24dp"
-        android:text="Pick Up Time" />
+        android:text="Pick Time:" />
 
     <TextView
         android:id="@+id/t6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
+        android:textStyle="bold"
         android:text="t6"
         android:layout_alignTop="@+id/phone"
         android:layout_alignStart="@+id/t5" />
@@ -169,18 +176,21 @@
         android:id="@+id/t7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/t6"
         android:textSize="15dp"
+        android:textStyle="bold"
         android:layout_alignTop="@+id/date"
-        android:text="t7" />
+        android:text="t7"
+        android:layout_toEndOf="@+id/t6"
+        android:layout_alignStart="@+id/t6" />
 
     <TextView
         android:id="@+id/t8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-
-        android:layout_alignEnd="@+id/t7"
+        android:textStyle="bold"
+        android:layout_toEndOf="@+id/t7"
+        android:layout_alignStart="@+id/t7"
         android:layout_alignTop="@+id/time"
         android:text="t8" />
 
@@ -191,6 +201,6 @@
         android:text="Pay"
 
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/time" />
+        android:layout_alignStart="@+id/t8" />
 
 </RelativeLayout>

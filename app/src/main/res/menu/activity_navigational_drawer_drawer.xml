@@ -20,7 +20,7 @@
 
     </group>
 
-    <item android:title="Communicate">
+
         <!--<menu>-->
             <!--<item-->
                 <!--android:id="@+id/nav_share"-->
@@ -31,6 +31,6 @@
                 <!--android:icon="@drawable/ic_menu_send"-->
                 <!--android:title="Send" />-->
         <!--</menu>-->
-    </item>
+
 
 </menu>
