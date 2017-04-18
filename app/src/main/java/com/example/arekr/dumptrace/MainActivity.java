@@ -247,28 +247,23 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                     usersref.child("Latitude").setValue(gpsTracker.getLatitude());
                     usersref.child("Longitude").setValue(gpsTracker.getLongitude());
                     usersref.child("Time").setValue(sdf.format(new Date()));
-                    try {
-                        Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
-                        String encodedImage = ImageBase64.encode(bitmap);
-                        Uri u = S;
+                // Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
+                // String encodedImage = ImageBase64.encode(bitmap);
 
-                        filepath.putFile(u).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                mProgress.dismiss();
-                                Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        //System.out.println("image="+encodedImage);
-                    } catch (FileNotFoundException e) {
-
-                        Toast.makeText(getApplicationContext(), "error in encoding photos", Toast.LENGTH_SHORT).show();
+                Uri u = S;
+                filepath.putFile(u).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        mProgress.dismiss();
+                        Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
                     }
-                }
+                });
+                //System.out.println("image="+encodedImage);
+                 }
                 else{
 
                     mProgress.dismiss();
-                    Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Not a valid image for Reporting ", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -528,7 +523,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                 photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 String path = MediaStore.Images.Media.insertImage(getContentResolver(), photo, "image", null);
 
-                S = Uri.parse(path);
+                //S = Uri.parse(path);
+                Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
+                S=uri;
 
                 // filepath = mstorage.child("photos").child(uuid).child(S.getLastPathSegment());
                 filepath = mstorage.child("photos").child(uuid);
