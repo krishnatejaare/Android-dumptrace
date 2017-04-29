@@ -102,7 +102,7 @@ String email,json;
 
 
         }
-        StringBuilder googlePlacesUrl = new StringBuilder("http://192.168.43.194:8080/email");
+        StringBuilder googlePlacesUrl = new StringBuilder("https:dumptrace.herokuapp.com/email");
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ConfirmationActivity.this);
         SharedPreferences.Editor editor = sharedPrefs.edit();
          gson = new Gson();
