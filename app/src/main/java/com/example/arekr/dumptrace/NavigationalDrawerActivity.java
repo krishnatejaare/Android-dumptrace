@@ -119,8 +119,8 @@ public TextView t1,t2,t3,t4,t5,t6,t7,t8,count,finalprice,name,email,phone,date,t
             System.out.println(p.getPrice());
 
             System.out.println(p.getDiscount());
-            //paymentAmount=p.getFinalprice();
-            paymentAmount="1";
+            paymentAmount=p.getFinalprice();
+            //paymentAmount="1";
             System.out.println(p.getFinalprice());
             t2.setText(p.getFinalprice());
         }

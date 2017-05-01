@@ -30,9 +30,17 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order a Pick Up"
+        android:text="Order Pick Up"
         android:id="@+id/book"
         android:layout_below="@+id/report"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="67dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Asset Manager"
+        android:id="@+id/rfid"
+        android:layout_below="@+id/book"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="67dp" />
     <ImageButton

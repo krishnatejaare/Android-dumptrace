@@ -2,20 +2,25 @@ package com.example.arekr.dumptrace;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button report,book;
+    private Button report,book,rfid;
     private ImageButton btnSpeak;
     private final int REQ_CODE_SPEECH_INPUT = 100;
 
@@ -25,8 +30,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_start);
         report=(Button)findViewById(R.id.report);
         book=(Button)findViewById(R.id.book);
+        rfid=(Button)findViewById(R.id.rfid);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Dump Trace");
+        rfid.setOnClickListener(this);
         report.setOnClickListener(this);
         book.setOnClickListener(this);
         btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);
@@ -68,11 +75,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         Intent i = new Intent(StartActivity.this, MainActivity.class);
                         startActivity(i);
                     }
-//                    if(result.get(0).equals("order a pick up")){
-//                        Intent i = new Intent(StartActivity.this, ItemsActivity.class);
-//
-//                        startActivity(i);
-//                    }
+                    if(result.get(0).equals("order pick-up")){
+                        Intent i = new Intent(StartActivity.this, ItemsActivity.class);
+
+                        startActivity(i);
+                    }
                 }
                 break;
             }
@@ -93,6 +100,35 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
             startActivity(i);
    }
+        if (v.getId() == R.id.rfid) {
+            List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
+            for(PackageInfo pack : packages)
+            {
+                ActivityInfo[] activityInfo = new ActivityInfo[0];
+                try {
+                    activityInfo = getPackageManager().getPackageInfo(pack.packageName, PackageManager.GET_ACTIVITIES).activities;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                if(activityInfo!=null)
+                {
+                    for(int i=0; i<activityInfo.length; i++)
+                    {
+                        if(pack.packageName.equals("com.example.jasmeet.track_n_trace")){
+                            System.out.println(pack.packageName);
+                            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pack.packageName);
+                            if (launchIntent != null) {
+                                startActivity(launchIntent);//null pointer check in case package name was not found
+                            }
+                        }
+
+                    }
+                }
+            }
+//
+
+        }
 
     }
 }

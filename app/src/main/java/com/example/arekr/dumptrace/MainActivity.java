@@ -100,7 +100,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.UUID;
 
 
-public class MainActivity extends AppCompatActivity implements AsyncResponse,GoogleApiClient.ConnectionCallbacks,
+public class MainActivity extends AppCompatActivity implements AsyncResponse,GoogleApiClient.ConnectionCallbacks, View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     private static final String CLOUD_VISION_API_KEY = "AIzaSyAKOO0uCKphUyBtK3vBq1Hgoty-q0k4iro";
@@ -155,6 +155,15 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         toolbar.setTitle("Dump Trace");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                Intent i = new Intent(MainActivity.this, StartActivity.class);
+
+                startActivity(i);
+            }
+        });
 
         manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -182,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         ivCamera = (ImageView) findViewById(R.id.ivCamera);
         ivGallery = (ImageView) findViewById(R.id.ivGallery);
         ivUpload = (ImageView) findViewById(R.id.ivUpload);
+        ivUpload.setOnClickListener(this);
         mProgress = new ProgressDialog(this);
         cameraPhoto = new CameraPhoto(getApplicationContext());
         galleryPhoto = new GalleryPhoto(getApplicationContext());
@@ -235,39 +245,39 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
             }
         });
 
-        ivUpload.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mProgress.setMessage("Uploading Image");
-                mProgress.show();
-                if(validate==true) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-                    DatabaseReference usersref = mFirebaseDatabaseReference.child("Address of the Dump spots").child(uuid);
-                    usersref.child("Address").setValue(a);
-                    usersref.child("Latitude").setValue(gpsTracker.getLatitude());
-                    usersref.child("Longitude").setValue(gpsTracker.getLongitude());
-                    usersref.child("Time").setValue(sdf.format(new Date()));
-                // Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
-                // String encodedImage = ImageBase64.encode(bitmap);
-
-                Uri u = S;
-                filepath.putFile(u).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        mProgress.dismiss();
-                        Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
-                    }
-                });
-                //System.out.println("image="+encodedImage);
-                 }
-                else{
-
-                    mProgress.dismiss();
-                    Toast.makeText(MainActivity.this, "Not a valid image for Reporting ", Toast.LENGTH_LONG).show();
-                }
-            }
-
-        });
+//        ivUpload.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                mProgress.setMessage("Uploading Image");
+//                mProgress.show();
+//                if(validate==true) {
+//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//                    mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+//                    DatabaseReference usersref = mFirebaseDatabaseReference.child("Address of the Dump spots").child(uuid);
+//                    usersref.child("Address").setValue(a);
+//                    usersref.child("Latitude").setValue(gpsTracker.getLatitude());
+//                    usersref.child("Longitude").setValue(gpsTracker.getLongitude());
+//                    usersref.child("Time").setValue(sdf.format(new Date()));
+//                // Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
+//                // String encodedImage = ImageBase64.encode(bitmap);
+//
+//                Uri u = S;
+//                filepath.putFile(u).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        mProgress.dismiss();
+//                        Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//                //System.out.println("image="+encodedImage);
+//                 }
+//                else{
+//
+//                    mProgress.dismiss();
+//                    Toast.makeText(MainActivity.this, "Not a valid image for Reporting ", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//
+//        });
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -456,11 +466,16 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                         }
                     }
                     if(result.get(0).equals("open gallery")){
+
+
                         uuid = UUID.randomUUID().toString();
                         startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
                     }
 
-                    if(result.get(0).equals("upload")){
+                    if(result.get(0).equals("upload")) {
+                        if (validate == true) {
+
+
                         mProgress.setMessage("Uploading Image");
                         mProgress.show();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -488,6 +503,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                             Toast.makeText(getApplicationContext(), "error in encoding photos", Toast.LENGTH_SHORT).show();
                         }
                     }
+                        else{
+                            if(validate==false) {
+                                mProgress.dismiss();
+                                Toast.makeText(MainActivity.this, "Not a valid image for Reporting ", Toast.LENGTH_LONG).show();
+                            }
+                            }
+                    }
 
                 }
                 break;
@@ -511,6 +533,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                     callCloudVision(bitmap);
 
                     ivImage.setImageBitmap(bitmap);
+                    mProgress.setMessage("Validating Image");
+                    mProgress.show();
                     photo = bitmap;
                 } catch (FileNotFoundException e) {
                     Toast.makeText(getApplicationContext(),
@@ -548,7 +572,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                     Bitmap bitmap = ImageLoader.init().from(photoPath).requestSize(512, 512).getBitmap();
                     callCloudVision(bitmap);
                     ivImage.setImageBitmap(bitmap);
-
+                    mProgress.setMessage("Validating Image");
+                    mProgress.show();
                 } catch (FileNotFoundException e) {
                     Toast.makeText(getApplicationContext(),
                             "Something Wrong while choosing photos", Toast.LENGTH_SHORT).show();
@@ -682,6 +707,14 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
             }
 
             protected void onPostExecute(String result) {
+
+                if(validate==true){
+                    mProgress.dismiss();
+                    Toast.makeText(MainActivity.this, "You can now Upload ", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    mProgress.dismiss();
+                    Toast.makeText(MainActivity.this, "Not a valid image, Please select another ", Toast.LENGTH_LONG).show();}
                 System.out.println(" cloud vision result is  "+ result);
                 //mImageDetails.setText(result);
             }
@@ -803,4 +836,40 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.ivUpload) {
+            mProgress.setMessage("Uploading Image");
+            mProgress.show();
+            if(validate==true) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference usersref = mFirebaseDatabaseReference.child("Address of the Dump spots").child(uuid);
+                usersref.child("Address").setValue(a);
+                usersref.child("Latitude").setValue(gpsTracker.getLatitude());
+                usersref.child("Longitude").setValue(gpsTracker.getLongitude());
+                usersref.child("Time").setValue(sdf.format(new Date()));
+                // Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
+                // String encodedImage = ImageBase64.encode(bitmap);
+
+                Uri u = S;
+                filepath.putFile(u).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        mProgress.dismiss();
+                        Toast.makeText(MainActivity.this, "Upload Completed", Toast.LENGTH_LONG).show();
+                    }
+                });
+                //System.out.println("image="+encodedImage);
+                validate=false;
+            }
+            else{
+                if(validate==false) {
+                    mProgress.dismiss();
+                    Toast.makeText(MainActivity.this, "Not a valid image for Reporting ", Toast.LENGTH_LONG).show();
+                }
+                }
+
+        }
+    }
 }

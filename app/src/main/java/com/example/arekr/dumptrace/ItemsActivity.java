@@ -47,7 +47,16 @@ public class ItemsActivity extends NavigationalDrawerActivity implements Adapter
         add.setOnClickListener(this);
         submit.setOnClickListener(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //toolbar.setLogo(R.drawable.backbutton);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                Intent i = new Intent(ItemsActivity.this, StartActivity.class);
 
+                startActivity(i);
+            }
+        });
         toolbar.setTitle("Schedule pickups");
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();

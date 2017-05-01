@@ -9,7 +9,9 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">true</item>
     </style>
-
+    <style name="Theme.MyFancyTheme" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/backbutton</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
