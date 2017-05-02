@@ -75,8 +75,13 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         Intent i = new Intent(StartActivity.this, MainActivity.class);
                         startActivity(i);
                     }
-                    if(result.get(0).equals("order pick-up")){
+                    if(result.get(0).matches("book a pickup||book a pick-up||book||pickup||pick-up")){
                         Intent i = new Intent(StartActivity.this, ItemsActivity.class);
+
+                        startActivity(i);
+                    }
+                    if(result.get(0).matches("open asset manager||asset manager")){
+                        Intent i = new Intent(StartActivity.this, AssetMainActivity.class);
 
                         startActivity(i);
                     }
@@ -101,33 +106,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             startActivity(i);
    }
         if (v.getId() == R.id.rfid) {
-            List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
-            for(PackageInfo pack : packages)
-            {
-                ActivityInfo[] activityInfo = new ActivityInfo[0];
-                try {
-                    activityInfo = getPackageManager().getPackageInfo(pack.packageName, PackageManager.GET_ACTIVITIES).activities;
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
+            Intent i = new Intent(StartActivity.this, AssetMainActivity.class);
 
-                if(activityInfo!=null)
-                {
-                    for(int i=0; i<activityInfo.length; i++)
-                    {
-                        if(pack.packageName.equals("com.example.jasmeet.track_n_trace")){
-                            System.out.println(pack.packageName);
-                            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(pack.packageName);
-                            if (launchIntent != null) {
-                                startActivity(launchIntent);//null pointer check in case package name was not found
-                            }
-                        }
-
-                    }
-                }
-            }
-//
-
+            startActivity(i);
         }
 
     }

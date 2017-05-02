@@ -87,26 +87,7 @@ public class ItemsActivity extends NavigationalDrawerActivity implements Adapter
         // TODO Auto-generated method stub
     }
 
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-        String a=j;
-        String b=json;
-        savedInstanceState.putString(j, json);
-        // etc.
-    }
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Restore UI state from the savedInstanceState.
-        // This bundle has also been passed to onCreate.
-        Gson gson = new Gson();
-        String myString = savedInstanceState.getString(j);
-        Type type = new TypeToken<ArrayList<item>>() {}.getType();
-        ArrayList<item> data = gson.fromJson(myString, type);
-    }
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.add) {

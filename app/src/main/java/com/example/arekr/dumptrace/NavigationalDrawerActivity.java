@@ -82,47 +82,54 @@ public TextView t1,t2,t3,t4,t5,t6,t7,t8,count,finalprice,name,email,phone,date,t
         String jso = sharedPrefs.getString(j, null);
         Type type = new TypeToken<ArrayList<item>>() {}.getType();
         ArrayList<item> arrayList = gson.fromJson(jso, type);
-        for(int i=0;i<arrayList.size();i++){
-            item object=arrayList.get(i);
-            System.out.println(object.getName());
-            System.out.println(object.getCount());
-
-        }
+//        int q=arrayList.size();
+//        if(q!=0) {
+//            for (int i = 0; i < arrayList.size(); i++) {
+//                item object = arrayList.get(i);
+//                System.out.println(object.getName());
+//                System.out.println(object.getCount());
+//
+//            }
+//        }
         String details="detailskey";
         String detail = sharedPrefs.getString(details, null);
         Type type1 = new TypeToken<ArrayList<Details>>() {}.getType();
-        ArrayList<Details> detailsList = gson.fromJson(detail, type1);
+        if(type1!=null) {
+            ArrayList<Details> detailsList = gson.fromJson(detail, type1);
 
-        for(int i=0;i<detailsList.size();i++){
-            Details o=detailsList.get(i);
-            System.out.println(o.getName());
-            t3.setText(o.getName());
-            System.out.println(o.getAddress());
-            t5.setText(o.getEmail());
-            t6.setText(o.getPhonenumber());
-            t7.setText(o.getDate());
-            t8.setText(o.getTime());
-            t4.setText(o.getAddress());
-            System.out.println(o.getEmail());
-            System.out.println(o.getPhonenumber());
-            System.out.println(o.getDate());
-            System.out.println(o.getTime());
+            for (int i = 0; i < detailsList.size(); i++) {
+                Details o = detailsList.get(i);
+                System.out.println(o.getName());
+                t3.setText(o.getName());
+                System.out.println(o.getAddress());
+                t5.setText(o.getEmail());
+                t6.setText(o.getPhonenumber());
+                t7.setText(o.getDate());
+                t8.setText(o.getTime());
+                t4.setText(o.getAddress());
+                System.out.println(o.getEmail());
+                System.out.println(o.getPhonenumber());
+                System.out.println(o.getDate());
+                System.out.println(o.getTime());
+            }
         }
         String price="pricekey";
         String rice=sharedPrefs.getString(price,null);
         Type type2 = new TypeToken<ArrayList<Price>>() {}.getType();
-        ArrayList<Price> priceList = gson.fromJson(rice, type2);
-        for(int i=0;i<priceList.size();i++){
-            Price p=priceList.get(i);
-            System.out.println(p.getCount());
-            t1.setText(p.getCount());
-            System.out.println(p.getPrice());
+        if(type2!=null) {
+            ArrayList<Price> priceList = gson.fromJson(rice, type2);
+            for (int i = 0; i < priceList.size(); i++) {
+                Price p = priceList.get(i);
+                System.out.println(p.getCount());
+                t1.setText(p.getCount());
+                System.out.println(p.getPrice());
 
-            System.out.println(p.getDiscount());
-            paymentAmount=p.getFinalprice();
-            //paymentAmount="1";
-            System.out.println(p.getFinalprice());
-            t2.setText(p.getFinalprice());
+                System.out.println(p.getDiscount());
+                paymentAmount = p.getFinalprice();
+                //paymentAmount="1";
+                System.out.println(p.getFinalprice());
+                t2.setText(p.getFinalprice());
+            }
         }
        // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -239,9 +246,7 @@ public TextView t1,t2,t3,t4,t5,t6,t7,t8,count,finalprice,name,email,phone,date,t
         int id = item.getItemId();
 
         if (id == R.id.nav_edititems) {
-            Intent i = new Intent(NavigationalDrawerActivity.this, ItemsActivity.class);
 
-            startActivity(i);
         } else if (id == R.id.nav_editdetails) {
             Intent i = new Intent(NavigationalDrawerActivity.this, DetailsActivity.class);
 

@@ -63,7 +63,13 @@
             android:name=".NavigationalDrawerActivity"
             android:label="@string/title_activity_navigational_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ConfirmationActivity"></activity>
+        <activity android:name=".ConfirmationActivity" />
+        <activity android:name=".AddActivity" />
+        <activity android:name=".AddAssetsActivity" />
+        <activity android:name=".AddGatewaysActivity" />
+        <activity android:name=".AddRegActivity" />
+        <activity android:name=".AssetMainActivtiy" />
+        <activity android:name=".AssetMainActivity"></activity>
     </application>
 
 </manifest>
