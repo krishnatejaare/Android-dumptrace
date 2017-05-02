@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -38,7 +39,16 @@ public class ItemslistActivity extends AppCompatActivity implements Serializable
         System.out.println("teja ITEMS LIST................................................................................");
         setContentView(R.layout.activity_itemslist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Schedule pickup");
+        toolbar.setTitle("Book a Pickup");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                Intent i = new Intent(ItemslistActivity.this, ItemsActivity.class);
+
+                startActivity(i);
+            }
+        });
         //setSupportActionBar(toolbar);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ItemslistActivity.this);
         Gson gson = new Gson();
@@ -56,14 +66,14 @@ public class ItemslistActivity extends AppCompatActivity implements Serializable
 
         heading=(TextView)findViewById(R.id.heading);
         //head=(TextView)findViewById(R.id.head);
-        Intent intent = getIntent();
-        Bundle args = intent.getBundleExtra("bundle");
-        ArrayList<item>tutorialList=(ArrayList<item>) args.getSerializable("data");
+       // Intent intent = getIntent();
+        //Bundle args = intent.getBundleExtra("bundle");
+        //ArrayList<item>tutorialList=(ArrayList<item>) args.getSerializable("data");
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         System.out.println("teja");
         //System.out.println(tutorialList.get(0).getTitle());
 
-        tutorialsAdapter = new ItemsAdapter(tutorialList);
+        tutorialsAdapter = new ItemsAdapter(arrayList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);

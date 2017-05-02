@@ -11,11 +11,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class PayingActivity extends AppCompatActivity implements View.OnClickListener{
+public class PayingActivity extends AppCompatActivity implements Serializable,View.OnClickListener{
 
     private TextView var,t1,t2,t3,t4,t5,price,discount,finalprice;
     private Button ok;
@@ -32,8 +34,16 @@ public class PayingActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_paying);
         intent = getIntent();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                Intent i = new Intent(PayingActivity.this, ItemslistActivity.class);
 
-        toolbar.setTitle("Schedule pickups");
+                startActivity(i);
+            }
+        });
+        toolbar.setTitle("Book a Pickup");
         var=(TextView)findViewById(R.id.var);
         t1=(TextView)findViewById(R.id.t1);
         t2=(TextView)findViewById(R.id.t2);
@@ -54,7 +64,13 @@ public class PayingActivity extends AppCompatActivity implements View.OnClickLis
         super.onResume();
         var.setText("");
         id="";
-        id = intent.getStringExtra("c");
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(PayingActivity.this);
+        Gson gson = new Gson();
+        String js="c";
+        String jso = sharedPrefs.getString(js, null);
+        Type type = new TypeToken<String>() {}.getType();
+        String arrayList = gson.fromJson(jso, type);
+        id = arrayList;
 
         var.setText(id);
 

@@ -3,8 +3,10 @@ package com.example.arekr.dumptrace;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.api.client.json.Json;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -82,6 +87,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.MyViewHolder
                    Intent intent = new Intent(context, PayingActivity.class);
                    intent.putExtra("c", c);
                    context.startActivity(intent);
+                    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    Gson gson = new Gson();
+                    SharedPreferences.Editor editor = sharedPrefs.edit();
+                    String json = gson.toJson(c);
+
+                    String j="c";
+                    editor.putString(j, json);
+                    editor.commit();
 //                    Context context=view.getContext();
 //                    Intent i = new Intent(context, ItemslistActivity.class);
 //                    Bundle args = new Bundle();

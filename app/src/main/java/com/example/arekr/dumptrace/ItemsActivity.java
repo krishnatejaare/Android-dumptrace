@@ -57,7 +57,7 @@ public class ItemsActivity extends NavigationalDrawerActivity implements Adapter
                 startActivity(i);
             }
         });
-        toolbar.setTitle("Schedule pickups");
+        toolbar.setTitle("Book a Pickup");
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
         categories.add("1");
@@ -101,9 +101,12 @@ public class ItemsActivity extends NavigationalDrawerActivity implements Adapter
         }
 
         else if (view.getId() == R.id.submit) {
-            ArrayList<String>name=new ArrayList<>();
+            if (item.getText().toString().equals("")) {
+                Toast.makeText(ItemsActivity.this, "Please Enter Item Name ", Toast.LENGTH_LONG).show();
+            } else{
+                ArrayList<String> name = new ArrayList<>();
 
-            data.add(new item(item.getText().toString(),value.toString()));
+            data.add(new item(item.getText().toString(), value.toString()));
 //            data.add(new Tutorial("table","2"));
 //            data.add(new Tutorial("chair","3"));
 
@@ -111,10 +114,10 @@ public class ItemsActivity extends NavigationalDrawerActivity implements Adapter
             System.out.println(data);
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ItemsActivity.this);
             Gson gson = new Gson();
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-                json = gson.toJson(data);
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            json = gson.toJson(data);
 
-            j="itemskey";
+            j = "itemskey";
             editor.putString(j, json);
             editor.commit();
             System.out.println("teja ITEMS LIST................................................................................");
@@ -125,7 +128,7 @@ public class ItemsActivity extends NavigationalDrawerActivity implements Adapter
             System.out.println("teja ITEMS LIST................................................................................");
             startActivity(i);
             System.out.println("teja ITEMS LIST................................................................................");
-
+        }
         }
     }
 }

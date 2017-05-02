@@ -60,8 +60,16 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // back button pressed
+                Intent i = new Intent(DetailsActivity.this, PayingActivity.class);
 
-        toolbar.setTitle("Schedule pickups");
+                startActivity(i);
+            }
+        });
+        toolbar.setTitle("Book a Pickup");
         /** Listener for click event of the button */
         time.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -156,20 +164,27 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.submit) {
-            d.add(new Details(name.getText().toString(),address.getText().toString(),phone.getText().toString(),email.getText().toString(),dateView.getText().toString(),timeView.getText().toString()));
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(DetailsActivity.this);
-            SharedPreferences.Editor edito = sharedPref.edit();
-            Gson gson = new Gson();
-            String jso = gson.toJson(d);
-            String details="detailskey";
-            edito.putString(details, jso);
-            edito.commit();
+            if (name.getText().toString().equals("")||address.getText().toString().equals("")||phone.getText().toString().equals("")||email.getText().toString().equals("")) {
+                Toast.makeText(DetailsActivity.this, "Incomplete Form...Please Fill the Details ", Toast.LENGTH_LONG).show();
+            }
+            else {
 
-            Intent i = new Intent(DetailsActivity.this, NavigationalDrawerActivity.class);
-            Bundle args = new Bundle();
-            args.putSerializable("details", (Serializable) d);
-            i.putExtra("bundle", args);
-            startActivity(i);
+
+                d.add(new Details(name.getText().toString(), address.getText().toString(), phone.getText().toString(), email.getText().toString(), dateView.getText().toString(), timeView.getText().toString()));
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(DetailsActivity.this);
+                SharedPreferences.Editor edito = sharedPref.edit();
+                Gson gson = new Gson();
+                String jso = gson.toJson(d);
+                String details = "detailskey";
+                edito.putString(details, jso);
+                edito.commit();
+
+                Intent i = new Intent(DetailsActivity.this, NavigationalDrawerActivity.class);
+                Bundle args = new Bundle();
+                args.putSerializable("details", (Serializable) d);
+                i.putExtra("bundle", args);
+                startActivity(i);
+            }
 
         }
     }

@@ -38,6 +38,7 @@ public class NavigationalDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 public TextView t1,t2,t3,t4,t5,t6,t7,t8,count,finalprice,name,email,phone,date,time,address ;
     public Button pay;
+    DrawerLayout drawer;
     private String paymentAmount;
     public static final int PAYPAL_REQUEST_CODE = 123;
     private static PayPalConfiguration config = new PayPalConfiguration()
@@ -204,12 +205,12 @@ public TextView t1,t2,t3,t4,t5,t6,t7,t8,count,finalprice,name,email,phone,date,t
     }
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+//        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
     }
     @Override
     public void onDestroy() {
@@ -246,6 +247,9 @@ public TextView t1,t2,t3,t4,t5,t6,t7,t8,count,finalprice,name,email,phone,date,t
         int id = item.getItemId();
 
         if (id == R.id.nav_edititems) {
+            Intent i = new Intent(NavigationalDrawerActivity.this, ItemsActivity.class);
+
+            startActivity(i);
 
         } else if (id == R.id.nav_editdetails) {
             Intent i = new Intent(NavigationalDrawerActivity.this, DetailsActivity.class);
