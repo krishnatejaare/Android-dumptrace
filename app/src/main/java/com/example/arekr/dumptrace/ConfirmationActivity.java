@@ -14,6 +14,8 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import com.firebase.client.utilities.Base64;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,6 +35,7 @@ String email,json;
     Object[] toPass;
     List<String>finaldetails=new ArrayList<>();
     private Button home;
+    private DatabaseReference mFirebaseDatabaseReference;
    // HttpURLConnection httpURLConnection = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ String email,json;
 
         toolbar.setTitle("Schedule pickups");
         //Getting Intent
+
         Intent intent = getIntent();
         try {
         jsonDetails = new JSONObject(intent.getStringExtra("PaymentDetails"));
@@ -71,15 +75,34 @@ String email,json;
         textViewStatus.setText(jsonDetails.getString("state"));
         textViewAmount.setText(paymentAmount+" USD");
         String details="detailskey";
+        String entereditems="itemskey";
         String items="pricekey";
+
+
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ConfirmationActivity.this);
         Gson gson = new Gson();
         String detail = sharedPrefs.getString(details, null);
         Type type1 = new TypeToken<ArrayList<Details>>() {}.getType();
         ArrayList<Details> detailsList = gson.fromJson(detail, type1);
 
+
+        Gson gson1 = new Gson();
+        String deta = sharedPrefs.getString(entereditems, null);
+        Type type2 = new TypeToken<ArrayList<item>>() {}.getType();
+        ArrayList<item> entereditemsList = gson.fromJson(deta, type2);
+
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference usersref = mFirebaseDatabaseReference.child("Bookings").child(jsonDetails.getString("id"));
+        usersref.child("Payment paid is ").setValue(paymentAmount);
         for(int i=0;i<detailsList.size();i++){
             Details o=detailsList.get(i);
+            usersref.child("Name").setValue(o.getName());
+            usersref.child("Address").setValue(o.getAddress());
+            usersref.child("Email").setValue(o.getEmail());
+            usersref.child("Phone Number").setValue(o.getPhonenumber());
+            usersref.child("Pick up Date").setValue(o.getDate());
+            usersref.child("Pick up Time").setValue(o.getTime());
+
             finaldetails.add(o.getName());
             finaldetails.add(o.getAddress());
             finaldetails.add(o.getEmail());
@@ -89,15 +112,27 @@ String email,json;
             email=o.getEmail();
 
         }
+       // DatabaseReference u=usersref.child("Items");
+        for(int i=0;i<entereditemsList.size();i++){
+            item it=entereditemsList.get(i);
+
+            DatabaseReference s=usersref.child("Items").push();
+                s.child("Item Name").setValue(it.getName());
+            s.child("Item Count").setValue(it.getCount());
+
+        }
+
+
 
         String item = sharedPrefs.getString(items, null);
-        Type type2 = new TypeToken<ArrayList<Price>>() {}.getType();
-        ArrayList<Price> itemsList = gson.fromJson(item, type2);
+        Type type5 = new TypeToken<ArrayList<Price>>() {}.getType();
+        ArrayList<Price> itemsList = gson.fromJson(item, type5);
 
         for(int i=0;i<detailsList.size();i++){
             Price o=itemsList.get(i);
             finaldetails.add(o.getCount());
             finaldetails.add(o.getFinalprice());
+            usersref.child("Total Item Count").setValue(o.getCount());
 
 
 
