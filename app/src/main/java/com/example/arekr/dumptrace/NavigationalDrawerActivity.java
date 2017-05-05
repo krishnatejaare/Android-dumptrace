@@ -72,77 +72,77 @@ public TextView t1,t2,t3,t4,t5,t6,t7,t8,count,finalprice,name,email,phone,date,t
         phone=(TextView)findViewById(R.id.phone);
         date=(TextView)findViewById(R.id.date);
         time=(TextView)findViewById(R.id.time);
-
-        Intent intent = new Intent(this, PayPalService.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
-        startService(intent);
-
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(NavigationalDrawerActivity.this);
-        Gson gson = new Gson();
-        String j="itemskey";
-        String jso = sharedPrefs.getString(j, null);
-        Type type = new TypeToken<ArrayList<item>>() {}.getType();
-        ArrayList<item> arrayList = gson.fromJson(jso, type);
-//        int q=arrayList.size();
-//        if(q!=0) {
-//            for (int i = 0; i < arrayList.size(); i++) {
-//                item object = arrayList.get(i);
-//                System.out.println(object.getName());
-//                System.out.println(object.getCount());
 //
+//        Intent intent = new Intent(this, PayPalService.class);
+//        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+//        startService(intent);
+//
+//        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(NavigationalDrawerActivity.this);
+//        Gson gson = new Gson();
+//        String j="itemskey";
+//        String jso = sharedPrefs.getString(j, null);
+//        Type type = new TypeToken<ArrayList<item>>() {}.getType();
+//        ArrayList<item> arrayList = gson.fromJson(jso, type);
+////        int q=arrayList.size();
+////        if(q!=0) {
+////            for (int i = 0; i < arrayList.size(); i++) {
+////                item object = arrayList.get(i);
+////                System.out.println(object.getName());
+////                System.out.println(object.getCount());
+////
+////            }
+////        }
+//        String details="detailskey";
+//        String detail = sharedPrefs.getString(details, null);
+//        Type type1 = new TypeToken<ArrayList<Details>>() {}.getType();
+//        if(type1!=null) {
+//            ArrayList<Details> detailsList = gson.fromJson(detail, type1);
+//
+//            for (int i = 0; i < detailsList.size(); i++) {
+//                Details o = detailsList.get(i);
+//                System.out.println(o.getName());
+//                t3.setText(o.getName());
+//                System.out.println(o.getAddress());
+//                t5.setText(o.getEmail());
+//                t6.setText(o.getPhonenumber());
+//                t7.setText(o.getDate());
+//                t8.setText(o.getTime());
+//                t4.setText(o.getAddress());
+//                System.out.println(o.getEmail());
+//                System.out.println(o.getPhonenumber());
+//                System.out.println(o.getDate());
+//                System.out.println(o.getTime());
 //            }
 //        }
-        String details="detailskey";
-        String detail = sharedPrefs.getString(details, null);
-        Type type1 = new TypeToken<ArrayList<Details>>() {}.getType();
-        if(type1!=null) {
-            ArrayList<Details> detailsList = gson.fromJson(detail, type1);
-
-            for (int i = 0; i < detailsList.size(); i++) {
-                Details o = detailsList.get(i);
-                System.out.println(o.getName());
-                t3.setText(o.getName());
-                System.out.println(o.getAddress());
-                t5.setText(o.getEmail());
-                t6.setText(o.getPhonenumber());
-                t7.setText(o.getDate());
-                t8.setText(o.getTime());
-                t4.setText(o.getAddress());
-                System.out.println(o.getEmail());
-                System.out.println(o.getPhonenumber());
-                System.out.println(o.getDate());
-                System.out.println(o.getTime());
-            }
-        }
-        String price="pricekey";
-        String rice=sharedPrefs.getString(price,null);
-        Type type2 = new TypeToken<ArrayList<Price>>() {}.getType();
-        if(type2!=null) {
-            ArrayList<Price> priceList = gson.fromJson(rice, type2);
-            for (int i = 0; i < priceList.size(); i++) {
-                Price p = priceList.get(i);
-                System.out.println(p.getCount());
-                t1.setText(p.getCount());
-                System.out.println(p.getPrice());
-
-                System.out.println(p.getDiscount());
-                paymentAmount = p.getFinalprice();
-                //paymentAmount="1";
-                System.out.println(p.getFinalprice());
-                t2.setText(p.getFinalprice());
-            }
-        }
-       // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        String price="pricekey";
+//        String rice=sharedPrefs.getString(price,null);
+//        Type type2 = new TypeToken<ArrayList<Price>>() {}.getType();
+//        if(type2!=null) {
+//            ArrayList<Price> priceList = gson.fromJson(rice, type2);
+//            for (int i = 0; i < priceList.size(); i++) {
+//                Price p = priceList.get(i);
+//                System.out.println(p.getCount());
+//                t1.setText(p.getCount());
+//                System.out.println(p.getPrice());
+//
+//                System.out.println(p.getDiscount());
+//                paymentAmount = p.getFinalprice();
+//                //paymentAmount="1";
+//                System.out.println(p.getFinalprice());
+//                t2.setText(p.getFinalprice());
+//            }
+//        }
+//       // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//
+//
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.setDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
     }
     @Override
     public void onClick(View v) {

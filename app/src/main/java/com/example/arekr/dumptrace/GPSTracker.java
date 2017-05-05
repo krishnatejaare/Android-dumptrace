@@ -58,7 +58,13 @@ public class GPSTracker extends Service implements LocationListener {
     public Location getLocation() {
         try {
             // check for permission
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                //Log.d("LOCATION", "Permissions are not given for GPS");
+               // ActivityCompat.requestPermissions(GPSTracker.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION);
+                permissionFailed = true;
 
+                return null;
+            }
 
             permissionFailed = false;
 

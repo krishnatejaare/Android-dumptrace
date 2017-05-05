@@ -26,6 +26,7 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     Uri S;
     GPSTracker gpsTracker;
     Bitmap photo;
@@ -318,6 +320,29 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission. ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        //Request location updates:
+                        gpsTracker.getLocation();
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                }
+                return;
+            }
             case CAMERA_PERMISSIONS_REQUEST:
                 if (PermissionUtils.permissionGranted(requestCode, CAMERA_PERMISSIONS_REQUEST, grantResults)) {
                     startCamera();
@@ -415,14 +440,59 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         mGoogleApiClient.connect();
     }
 
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission. ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission. ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("Requesting Location")
+                        .setMessage("Need to access location")
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MainActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission. ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
+        checkLocationPermission();
         gpsTracker.getLocation();
         // mGoogleApiClient.connect();
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?");
         googlePlacesUrl.append("latlng=" + gpsTracker.getLatitude() + "," + gpsTracker.getLongitude());
-        // googlePlacesUrl.append("latlng=" + latitude + "," + longitude);
+         //googlePlacesUrl.append("latlng=" + latitude + "," + longitude);
         //googlePlacesUrl.append("&location_type=ROOFTOP&result_type=street_address");
         googlePlacesUrl.append("&result_type=street_address");
         //googlePlacesUrl.append("&location_type=GEOMETRIC_CENTER|APPROXIMATE");
@@ -430,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         googlePlacesUrl.append("&key=" + GOOGLE_API_KEY);
         System.out.println("googlePlacesUrl" + googlePlacesUrl);
         toPass = new Object[1];
-        Log.d("TAG", googlePlacesUrl.toString());
+        //Log.d("TAG", googlePlacesUrl.toString());
         toPass[0] = googlePlacesUrl.toString();
         Http http = new Http();
         http.delegate = this;
@@ -540,7 +610,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                     Toast.makeText(getApplicationContext(),
                             "Something Wrong while loading photos", Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
-                    Log.d(TAG, "Image picking failed because " + e.getMessage());
+                    //Log.d(TAG, "Image picking failed because " + e.getMessage());
                 }
 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -578,7 +648,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                     Toast.makeText(getApplicationContext(),
                             "Something Wrong while choosing photos", Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
-                    Log.d(TAG, "Image picking failed because " + e.getMessage());
+                    //Log.d(TAG, "Image picking failed because " + e.getMessage());
                     //Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
                 }
 
@@ -692,16 +762,16 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                             vision.images().annotate(batchAnnotateImagesRequest);
                     // Due to a bug: requests to Vision API containing large images fail when GZipped.
                     annotateRequest.setDisableGZipContent(true);
-                    Log.d(TAG, "created Cloud Vision request object, sending request");
+                   // Log.d(TAG, "created Cloud Vision request object, sending request");
 
                     BatchAnnotateImagesResponse response = annotateRequest.execute();
                     return convertResponseToString(response);
 
                 } catch (GoogleJsonResponseException e) {
-                    Log.d(TAG, "failed to make API request because " + e.getContent());
+                    //Log.d(TAG, "failed to make API request because " + e.getContent());
                 } catch (IOException e) {
-                    Log.d(TAG, "failed to make API request because of other IOException " +
-                            e.getMessage());
+                   // Log.d(TAG, "failed to make API request because of other IOException " +
+                           // e.getMessage());
                 }
                 return "Cloud Vision API request failed. Check logs for details.";
             }
@@ -790,7 +860,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
     }
 
     private void handleNewLocation(Location location) {
-        Log.d(TAG, location.toString());
+       // Log.d(TAG, location.toString());
 
         latitude = location.getLatitude();
         longitude = location.getLongitude();
@@ -830,7 +900,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
              * If no resolution is available, display a dialog to the
              * user with the error.
              */
-            Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
+            //Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
         }
 
     }
@@ -848,6 +918,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
                 usersref.child("Address").setValue(a);
                 usersref.child("Latitude").setValue(gpsTracker.getLatitude());
                 usersref.child("Longitude").setValue(gpsTracker.getLongitude());
+//                usersref.child("Latitude").setValue(latitude);
+//                usersref.child("Longitude").setValue(longitude);
                 usersref.child("Time").setValue(sdf.format(new Date()));
                 // Bitmap bitmap = ImageLoader.init().from(selectedPhoto).requestSize(1024, 1024).getBitmap();
                 // String encodedImage = ImageBase64.encode(bitmap);

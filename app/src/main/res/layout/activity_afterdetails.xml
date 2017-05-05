@@ -1,9 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/backgroundstyle"
     tools:context="com.example.arekr.dumptrace.afterdetailsActivity">
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:titleTextColor="@color/colorAccent"
+            android:layout_width="match_parent"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </android.support.design.widget.AppBarLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Item Count:"
+        android:layout_marginTop="65dp"
+        android:textSize="20dp"
+        android:layout_alignBottom="@+id/t1"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40dp"
+        android:textSize="25dp"
+        android:text="Verify"
+        android:layout_marginTop="70dp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/t1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="t1"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:layout_marginRight="100px"
+        android:layout_below="@+id/verify"
+        android:layout_alignStart="@+id/verify"
+        android:layout_marginTop="14dp" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/count"
+        android:textSize="20dp"
+
+        android:layout_marginTop="20dp"
+        android:text="Final Price:" />
+
+    <TextView
+        android:id="@+id/t2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="t2"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_alignBaseline="@+id/price"
+        android:layout_alignBottom="@+id/price"
+        android:layout_alignStart="@+id/t1" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/price"
+        android:textSize="20dp"
+
+        android:layout_marginTop="20dp"
+        android:text="Name:" />
+
+    <TextView
+        android:id="@+id/t3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="t3"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:layout_above="@+id/address"
+        android:layout_alignStart="@+id/t2" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/name"
+        android:textSize="20dp"
+
+        android:layout_marginTop="20dp"
+        android:text="Address:" />
+
+    <TextView
+        android:id="@+id/t4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="t4"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:layout_alignBaseline="@+id/address"
+        android:layout_alignBottom="@+id/address"
+        android:layout_alignStart="@+id/t3" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:textSize="20dp"
+
+        android:layout_below="@+id/address"
+        android:layout_marginTop="20dp"
+        android:text="Email ID:" />
+
+    <TextView
+        android:id="@+id/t5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/t4"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:layout_alignTop="@+id/email"
+        android:text="t5" />
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/email"
+        android:textSize="20dp"
+
+        android:layout_below="@+id/email"
+        android:layout_marginTop="20dp"
+        android:text="Mobile:"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:textSize="20dp"
+
+        android:layout_below="@+id/phone"
+        android:layout_marginTop="20dp"
+        android:text="Pick Date:" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:textSize="20dp"
+
+        android:layout_below="@+id/date"
+        android:layout_marginTop="24dp"
+        android:text="Pick Time:" />
+
+    <TextView
+        android:id="@+id/t6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:text="t6"
+        android:layout_alignTop="@+id/phone"
+        android:layout_alignStart="@+id/t5" />
+
+    <TextView
+        android:id="@+id/t7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/date"
+        android:text="t7"
+        android:layout_toEndOf="@+id/t6"
+        android:layout_alignStart="@+id/t6" />
+
+    <TextView
+        android:id="@+id/t8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_toEndOf="@+id/t7"
+        android:layout_alignStart="@+id/t7"
+        android:layout_alignTop="@+id/time"
+        android:text="t8" />
+
+    <Button
+        android:id="@+id/pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pay"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/t8" />
+
+</RelativeLayout>

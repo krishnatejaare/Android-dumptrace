@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsActivity extends NavigationalDrawerActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class ItemsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private EditText item;
     private Button add,submit;
     private TextView title,helptext;

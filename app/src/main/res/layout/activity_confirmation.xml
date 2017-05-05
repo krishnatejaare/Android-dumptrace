@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
 
             android:id="@+id/tableLayout"
-            android:layout_above="@+id/textView2"
+            android:layout_below="@+id/textView3"
             android:layout_alignParentStart="true">
 
             <TableRow>
@@ -39,15 +39,17 @@
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="50dp"
                     android:text="Payment Amount : "
-                    android:textSize="15dp" />
+                    android:textSize="20dp" />
 
                 <TextView
                     android:id="@+id/paymentAmount"
                     android:layout_width="wrap_content"
                     android:textStyle="bold"
-                    android:textSize="15dp"
+                    android:layout_marginTop="50dp"
+                    android:textSize="20dp"
                     android:layout_height="wrap_content" />
             </TableRow>
 
@@ -56,14 +58,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:text="Status : " />
 
                 <TextView
                     android:id="@+id/paymentStatus"
                     android:layout_width="wrap_content"
                     android:textStyle="bold"
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:layout_height="wrap_content" />
             </TableRow>
 
@@ -72,13 +74,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
+                    android:textSize="20dp"
+                    android:layout_marginTop="50dp"
                     android:text="Payment Id : " />
 
                 <TextView
                     android:id="@+id/paymentId"
                     android:textStyle="bold"
                     android:textSize="13dp"
+                    android:layout_marginTop="50dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </TableRow>
@@ -86,14 +90,7 @@
 
         </TableLayout>
 
-    <ImageButton
-        android:id="@+id/btnSpeak"
-        android:layout_width="800px"
-        android:layout_height="450px"
-        android:background="@null"
-        android:src="@drawable/correct"
-        android:layout_below="@+id/appBarLayout"
-        android:layout_alignParentStart="true" />
+    
 
     <TextView
         android:id="@+id/textView2"
@@ -101,9 +98,8 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:text="Confirmation was sent to your mail "
-        android:layout_marginBottom="29dp"
-        android:layout_marginTop="25dp"
-        android:layout_above="@+id/home"
+        android:layout_marginTop="48dp"
+        android:layout_below="@+id/tableLayout"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -119,9 +115,9 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:textStyle="bold"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="70dp"
         android:text="Details"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/btnSpeak" />

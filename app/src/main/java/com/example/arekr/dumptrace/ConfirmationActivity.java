@@ -93,15 +93,16 @@ String email,json;
 
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         DatabaseReference usersref = mFirebaseDatabaseReference.child("Bookings").child(jsonDetails.getString("id"));
-        usersref.child("Payment paid is ").setValue(paymentAmount);
+        usersref.child("PaidAmount").setValue(paymentAmount);
+        usersref.child("PaymentID").setValue(jsonDetails.getString("id"));
         for(int i=0;i<detailsList.size();i++){
             Details o=detailsList.get(i);
             usersref.child("Name").setValue(o.getName());
             usersref.child("Address").setValue(o.getAddress());
             usersref.child("Email").setValue(o.getEmail());
-            usersref.child("Phone Number").setValue(o.getPhonenumber());
-            usersref.child("Pick up Date").setValue(o.getDate());
-            usersref.child("Pick up Time").setValue(o.getTime());
+            usersref.child("PhoneNumber").setValue(o.getPhonenumber());
+            usersref.child("PickupDate").setValue(o.getDate());
+            usersref.child("PickupTime").setValue(o.getTime());
 
             finaldetails.add(o.getName());
             finaldetails.add(o.getAddress());
@@ -117,8 +118,8 @@ String email,json;
             item it=entereditemsList.get(i);
 
             DatabaseReference s=usersref.child("Items").push();
-                s.child("Item Name").setValue(it.getName());
-            s.child("Item Count").setValue(it.getCount());
+                s.child("ItemName").setValue(it.getName());
+            s.child("ItemCount").setValue(it.getCount());
 
         }
 
@@ -132,7 +133,7 @@ String email,json;
             Price o=itemsList.get(i);
             finaldetails.add(o.getCount());
             finaldetails.add(o.getFinalprice());
-            usersref.child("Total Item Count").setValue(o.getCount());
+            usersref.child("TotalItemCount").setValue(o.getCount());
 
 
 
