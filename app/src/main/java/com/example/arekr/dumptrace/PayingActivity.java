@@ -48,10 +48,10 @@ public class PayingActivity extends AppCompatActivity implements Serializable,Vi
         t1=(TextView)findViewById(R.id.t1);
         t2=(TextView)findViewById(R.id.t2);
         t3=(TextView)findViewById(R.id.t3);
-        t4=(TextView)findViewById(R.id.t4);
+       // t4=(TextView)findViewById(R.id.t4);
         t5=(TextView)findViewById(R.id.t5);
         price=(TextView)findViewById(R.id.price);
-        discount=(TextView)findViewById(R.id.discount);
+        //discount=(TextView)findViewById(R.id.discount);
         finalprice=(TextView)findViewById(R.id.finalprice);
         ok=(Button)findViewById(R.id.ok);
         ok.setOnClickListener(this);
@@ -77,24 +77,24 @@ public class PayingActivity extends AppCompatActivity implements Serializable,Vi
         x = Integer.parseInt(id);
         if (x <= 3) {
             double a = (x) * 9.07;
-            double b = 0;
+            double b = 9.07;
             String s = Double.toString(a);
             String r=s;
             String w = Double.toString(b);
-            price.setText(s);
-            discount.setText(r);
-            finalprice.setText(w);
+            price.setText(w);
+           // discount.setText(r);
+            finalprice.setText(s);
 
         } else {
             double a = x * 9.07;
-            double b = 3 * 9.07;
+            double b = 9.07;
             double c = a - b;
             String s = Double.toString(a);
             String r = Double.toString(b);
             String w = Double.toString(c);
-            price.setText(s);
-            discount.setText(r);
-            finalprice.setText(w);
+            price.setText(r);
+            //discount.setText(r);
+            finalprice.setText(s);
 
         }
 
@@ -105,7 +105,7 @@ public class PayingActivity extends AppCompatActivity implements Serializable,Vi
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.ok) {
-            p.add(new Price(id,price.getText().toString(),discount.getText().toString(),finalprice.getText().toString()));
+            p.add(new Price(id,price.getText().toString(),finalprice.getText().toString()));
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(PayingActivity.this);
             SharedPreferences.Editor editor = sharedPrefs.edit();
             Gson gson = new Gson();

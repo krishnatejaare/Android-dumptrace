@@ -21,7 +21,7 @@ android {
         applicationId "com.krishna.arekr.dumptrace"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 7
+        versionCode 8
         versionName "1.0"
         multiDexEnabled true
     }

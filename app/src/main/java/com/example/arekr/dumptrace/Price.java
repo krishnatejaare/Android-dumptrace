@@ -7,13 +7,12 @@ package com.example.arekr.dumptrace;
 public class Price {
     private String count;
     private String price;
-    private String discount;
+    //private String discount;
     private String finalprice;
 
-    public Price(String count, String price, String discount, String finalprice) {
+    public Price(String count, String price, String finalprice) {
         this.setCount(count);
         this.setPrice(price);
-        this.setDiscount(discount);
         this.setFinalprice(finalprice);
     }
 
@@ -33,13 +32,7 @@ public class Price {
         this.price = price;
     }
 
-    public String getDiscount() {
-        return discount;
-    }
 
-    public void setDiscount(String discount) {
-        this.discount = discount;
-    }
 
     public String getFinalprice() {
         return finalprice;

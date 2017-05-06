@@ -800,7 +800,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse,Goo
         if (labels != null) {
             for (EntityAnnotation label : labels) {
                 // if(label.getDescription()=="waste||pollution||scrap||furniture||rubble||mattress||bed||yard||litter||patio||backyard||asphalt||lawn||material||flora||tree||soil||geological phenomenon||road"){
-                if(label.getDescription().matches("waste||pollution||scrap||furniture||rubble||mattress||bed||yard||litter||patio||backyard||asphalt||lawn||material||flora||tree||soil||geological phenomenon||jungle||garden||forest||natural environment||grass||field")){
+                if(label.getDescription().matches("red||black||clothing||wheel||vehicle||waste||pollution||scrap||furniture||rubble||mattress||bed||yard||litter||patio||backyard||asphalt||lawn||material||flora||tree||soil||geological phenomenon||jungle||garden||forest||natural environment||grass||field")){
                     System.out.println("label Detected..................................................................");
                     validate=true;
                 }

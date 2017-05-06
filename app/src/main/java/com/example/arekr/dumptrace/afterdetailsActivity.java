@@ -122,7 +122,7 @@ public class afterdetailsActivity extends AppCompatActivity implements Serializa
                 t1.setText(p.getCount());
                 System.out.println(p.getPrice());
 
-                System.out.println(p.getDiscount());
+               // System.out.println(p.getDiscount());
                 paymentAmount = p.getFinalprice();
                 //paymentAmount="1";
                 System.out.println(p.getFinalprice());
